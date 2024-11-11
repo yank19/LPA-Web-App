@@ -250,3 +250,8 @@ section.whitepart{
 } 
 .arrow-icon { 
     font-size: 24px; color: #00bfa5; }
+
+#content {
+        padding: 0;
+        flex-grow: 1;
+}

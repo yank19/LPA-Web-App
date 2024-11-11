@@ -24,7 +24,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['login'])) {
     if ($result->num_rows == 1) {
         $user = $result->fetch_assoc();
         // Verificar la contraseña
-        if (password_verify($password, $user['password'])) {
+        if (password_verify($password, $user['lpa_user_password'])) {
             echo "Inicio de sesión exitoso.";
         } else {
             echo "Contraseña incorrecta.";
@@ -32,7 +32,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['login'])) {
     } else {
         // Si el usuario no está registrado, guardar mensaje en la sesión y redirigir
         $_SESSION['message'] = "El usuario no está registrado. Por favor, regístrate.";
-        header("Location:login.html");
+        header("Location:register.php");
         exit();
     }
 }
