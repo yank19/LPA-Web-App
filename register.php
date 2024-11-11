@@ -1,6 +1,13 @@
+
+
+
+
 <?php
+// com+ k+ c
+// com+ k+ u
+
 session_start(); // Iniciar la sesión
-include 'database.php'; // Archivo de conexión a la base de datos
+include 'database.php'; // Archivo de conexión a la base de datos */
 
 // Procesar el registro
 if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['register'])) {
@@ -43,7 +50,10 @@ if (isset($_SESSION['message'])) {
     echo "<p style='color:red;'>" . $_SESSION['message'] . "</p>";
     unset($_SESSION['message']); // Eliminar el mensaje después de mostrarlo
 }
+
 ?>
+
+
 <!DOCTYPE html>
 <html lang="es">
 <head>
@@ -86,6 +96,4 @@ if (isset($_SESSION['message'])) {
     
 </body>
 </html>
-
-
 
