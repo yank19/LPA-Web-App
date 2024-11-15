@@ -7,7 +7,7 @@
 // com+ k+ u
 
 session_start(); // Iniciar la sesión
-include 'database.php'; // Archivo de conexión a la base de datos */
+include 'conexion.php'; // Archivo de conexión a la base de datos */
 
 // Procesar el registro
 if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['register'])) {
