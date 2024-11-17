@@ -1,3 +1,44 @@
+<?php
+session_start();
+require_once 'config.php'; // Incluir la configuración de la base de datos
+
+if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST["login"])) {
+    $username = $_POST["username"];
+    $password = $_POST["password"];
+
+    // Consultar el usuario en la base de datos
+    $sql = "SELECT lpa_user_ID,lpa_user_password FROM lpa_users WHERE lpa_user_username = ?";
+    $stmt = $conn->prepare($sql);
+    $stmt->bind_param("s", $username);
+    $stmt->execute();
+    $result = $stmt->get_result();
+
+    if ($result->num_rows > 0) {
+        $user = $result->fetch_assoc();
+
+        // Verificar la contraseña
+        if (password_verify($password, $user["lpa_user_password"])) {
+            // Guardar información en la sesión
+            $_SESSION["user_id"] = $user["lpa_user_ID"];
+            $_SESSION["username"] = $username;
+            echo "correct";
+            // Redirigir al usuario a otra página
+            header("Location: dashboard.php");
+            exit();
+        } else {
+            echo "<script>alert('Wrong Password.');</script>";
+        }
+    } else {
+        echo "<script>alert('User not found.');</script>";
+    }
+
+    //$stmt->close();
+}
+    
+
+?>
+
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -20,18 +61,23 @@
         <h2><span class="welcome">WELCOME </span><br><span class="world">to Our world</span></h2>
     </div>
     
-    <form action="process_login.php" method="POST">
+    <form action="index.php" method="POST">
             
             <input type="text" name="username" placeholder="Username" required>
             <input type="password" name="password" placeholder="Password" required>
-
+            <div class="forgotpassword">
+                <a href="forgot_password.php">Forgot Password?</a>
+            </div>
+            
             <button type="submit" name="login">Log in</button>
-
-
-            <a href="#" class="forgot-password">Forgot Password?</a>
-            <a href="#" class="Sing-up">Sing up</a>
+            
+            <div class="createAccount">
+                Don't have an account?<a href="register.php">Create account</a>
+            </div>
     </form>
    
     
 </body>
 </html>
+
+

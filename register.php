@@ -1,48 +1,43 @@
-
-
-
-
 <?php
-// com+ k+ c
-// com+ k+ u
+require_once 'config.php'; // Incluir la configuración de la base de datos
 
-session_start(); // Iniciar la sesión
-include 'conexion.php'; // Archivo de conexión a la base de datos */
+if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST["register"])) {
+    // Obtener datos del formulario
+    $firstname = $_POST["firstname"];
+    $lastname = $_POST["lastname"];
+    $email = $_POST["email"];
+    $username = $_POST["username"];
+    $password = $_POST["password"];
+    $confirm_password = $_POST["confirm_password"];
 
-// Procesar el registro
-if ( isset($_POST['register'])) {
-   
-    $firstname = $_POST['firstname'];
-    $lastname = $_POST['lastname'];
-    $email = $_POST['email'];
-    $username = $_POST['username'];
-    $password = $_POST['password'];
-    $confirm_password = $_POST['confirm_password'];
+    // Verificar que las contraseñas coincidan
+    if ($password !== $confirm_password) {
+        echo "Las contraseñas no coinciden.";
+    } else {
+        // Encriptar la contraseña
+        $hashed_password = password_hash($password, PASSWORD_BCRYPT);
 
-   // Insertar el nuevo usuario en la base de datos
-   $sql = "INSERT INTO lpa_users (lpa_user_ID,lpa_user_username,lpa_user_password,lpa_user_firstname,lpa_user_lastname,lpa_user_group,lpa_inv_status,lpa_users_email)  VALUES ('','$username', '$hashed_password', '$firstname', '$lastname','user','A','$email') " ;
-    
-   $ejecutar = mysqli_query($conn,$sql);
+        // Insertar usuario en la base de datos
+        $sql = "INSERT INTO lpa_users (lpa_user_username, lpa_user_password, lpa_user_firstname, lpa_user_lastname, lpa_users_email) 
+                VALUES (?, ?, ?, ?, ?)";
+        $stmt = $conn->prepare($sql);
+        $stmt->bind_param("sssss", $username, $hashed_password, $firstname, $lastname, $email);
+
+        if ($stmt->execute()) {
+            // Mostrar alerta de éxito y redirigir al login
+            echo "<script>
+                    alert('User registered successfully.');
+                    window.location.href = 'index.php';
+                  </script>";
+            exit(); // Detener la ejecución del script después de redirigirß
+        } else {
+            echo "Error al registrar el usuario: " . $conn->error;
+        }
+
+        $stmt->close();
+    }
 }
-
-//     // Verificar si las contraseñas coinciden
-//     if ($password !== $confirm_password) {
-//         die("Password and Confirm Password fields should match");
-//     }
-
-//     // Encriptar la contraseña antes de almacenarla
-//     $hashed_password = password_hash($password, PASSWORD_DEFAULT);
-
- 
-
-// // Mostrar el mensaje si existe en la sesión
-// if (isset($_SESSION['message'])) {
-//     echo "<p style='color:red;'>" . $_SESSION['message'] . "</p>";
-//     unset($_SESSION['message']); // Eliminar el mensaje después de mostrarlo
-// }
-
 ?>
-
 
 <!DOCTYPE html>
 <html lang="es">
@@ -75,11 +70,6 @@ if ( isset($_POST['register'])) {
 
         <label for="password"> Confirm Password</label>
         <input type="password" name="confirm_password" required>
-
-        
-        
-      
-
 
         <button type="submit" name="register">Registrar</button>
     </form>
