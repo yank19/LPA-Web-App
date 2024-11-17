@@ -37,7 +37,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST["submit"])) {
             echo "<script>alert('Error sending email.'); window.location='forgot_password.php';</script>";
         }
     } else {
-        echo "<script>alert('Email not found.'); window.location='forgot_password.php';</script>";
+        echo "<script>alert('Email not found.'); window.location.href='index.php';</script>";
+        
     }
 }
 ?>
