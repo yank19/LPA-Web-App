@@ -10,7 +10,7 @@ session_start(); // Iniciar la sesión
 include 'conexion.php'; // Archivo de conexión a la base de datos */
 
 // Procesar el registro
-if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['register'])) {
+if ( isset($_POST['register'])) {
    
     $firstname = $_POST['firstname'];
     $lastname = $_POST['lastname'];
@@ -19,37 +19,27 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['register'])) {
     $password = $_POST['password'];
     $confirm_password = $_POST['confirm_password'];
 
-
-    // Verificar si las contraseñas coinciden
-    if ($password !== $confirm_password) {
-        die("Password and Confirm Password fields should match");
-    }
-
-    // Encriptar la contraseña antes de almacenarla
-    $hashed_password = password_hash($password, PASSWORD_DEFAULT);
-
-    // Insertar el nuevo usuario en la base de datos
-    $sql = "INSERT INTO lpa_users ( lpa_user_username, lpa_user_password, lpa_user_firstname, lpa_user_lastname, lpa_user_group, lpa_inv_status,lpa_users_email) VALUES (?, ?, ?, ?, 'user', 'A', ?)";
-    $stmt = $conn->prepare($sql);
-
-    if ($stmt === false) {
-        die("Error en la preparación de la consulta: " . $conn->error);
-    }
-
-    $stmt->bind_param("sss", $username, $hashed_password, $firstname, $lastname,'user', 'A', $email);
-
-    if ($stmt->execute()) {
-        echo "Registro exitoso. Ahora puedes iniciar sesión.";
-    } else {
-        echo "Error al registrar usuario: " . $stmt->error;
-    }
+   // Insertar el nuevo usuario en la base de datos
+   $sql = "INSERT INTO lpa_users (lpa_user_ID,lpa_user_username,lpa_user_password,lpa_user_firstname,lpa_user_lastname,lpa_user_group,lpa_inv_status,lpa_users_email)  VALUES ('','$username', '$hashed_password', '$firstname', '$lastname','user','A','$email') " ;
+    
+   $ejecutar = mysqli_query($conn,$sql);
 }
 
-// Mostrar el mensaje si existe en la sesión
-if (isset($_SESSION['message'])) {
-    echo "<p style='color:red;'>" . $_SESSION['message'] . "</p>";
-    unset($_SESSION['message']); // Eliminar el mensaje después de mostrarlo
-}
+//     // Verificar si las contraseñas coinciden
+//     if ($password !== $confirm_password) {
+//         die("Password and Confirm Password fields should match");
+//     }
+
+//     // Encriptar la contraseña antes de almacenarla
+//     $hashed_password = password_hash($password, PASSWORD_DEFAULT);
+
+ 
+
+// // Mostrar el mensaje si existe en la sesión
+// if (isset($_SESSION['message'])) {
+//     echo "<p style='color:red;'>" . $_SESSION['message'] . "</p>";
+//     unset($_SESSION['message']); // Eliminar el mensaje después de mostrarlo
+// }
 
 ?>
 
