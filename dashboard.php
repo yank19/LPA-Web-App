@@ -60,18 +60,21 @@ $stmt->close();
             <br>
             <br>
             <li><a class="itens" href="#"><span class="fa fa-home"></span> Home</a></li>
-            <li><a class="itens" href="#"><span class="fa fa-cube"></span> Stock</a></li>
+            <li><a class="itens" href="stock.php"><span class="fa fa-cube"></span> Stock</a></li>
             <li><a class="itens" href="#"><span class="fa fa-line-chart"></span> Sales</a></li>
-            <li><a class="itens" href="#"><span class="fa fa-book"></span> invoices</a></li>
-            <li><a class="itens" href="#"><span class="fa fa-users"></span> clients</a></li>
-            <br>
-            <br>
-            <br>
-            <br>
+            <?php if ($_SESSION['role'] == 'admin') { ?>
+        <li><a class="itens" href="#"><span class="fa fa-book"></span> invoices</a></li>
+        <li><a class="itens" href="#"><span class="fa fa-users"></span> clients</a></li>
+             <?php } ?>
             <br><br>
-            <br>
-            <li><a class="itensbutton" href="#"><span class="fa fa-cog"></span> System Admin.</a></li>
-            <li><a class="itensbutton" href="#"><span class="fa fa-pencil"></span> User Management</a></li>
+            
+            <?php if ($_SESSION['role'] == 'admin') { ?>
+          <!-- <li><a href="system_admin.php"><span class="fa fa-cog"></span> System Admin.</a></li>  -->
+        
+        <li><a class="itensbutton" href="#"><span class="fa fa-cog"></span> System Admin.</a></li>
+        <li><a class="itensbutton" href="user_management.php"><span class="fa fa-pencil"></span> User Management</a></li>
+             <?php } ?>
+          
             <li><a class="itensbutton" href="#"><span class="fa fa-question-circle"></span> Help</a></li>
             <li><a class="itensbutton" href="#"> <span class="fa fa-info-circle"></span> About</a></li>
             <li><a class="itensbutton" href="#"><span class="fa fa-address-book"></span> User Guide</a></li>
@@ -113,7 +116,7 @@ $stmt->close();
     <section class="whitepart">
         <h3>Lest's Start</h3><br>
         <div class="buttonsHome">
-            <a href="https://www.w3schools.com/html/html_blocks.asp" class="siglebuttonhome">
+            <a href="stock.php" class="siglebuttonhome">
                 <h3>Stock</h3>
                 <span class="fa fa-cube"></span>
             </a>

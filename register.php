@@ -18,10 +18,11 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST["register"])) {
         $hashed_password = password_hash($password, PASSWORD_BCRYPT);
 
         // Insertar usuario en la base de datos
-        $sql = "INSERT INTO lpa_users (lpa_user_username, lpa_user_password, lpa_user_firstname, lpa_user_lastname, lpa_users_email) 
-                VALUES (?, ?, ?, ?, ?)";
+        $sql = "INSERT INTO lpa_users (lpa_user_username, lpa_user_password, lpa_user_firstname, lpa_user_lastname, lpa_users_email, lpa_user_role) 
+                VALUES (?, ?, ?, ?, ?,?)";
         $stmt = $conn->prepare($sql);
-        $stmt->bind_param("sssss", $username, $hashed_password, $firstname, $lastname, $email);
+        $role = "user"; // Por defecto, rol de usuario normal
+        $stmt->bind_param("sssss", $username, $hashed_password, $firstname, $lastname, $email,$role);
 
         if ($stmt->execute()) {
             // Mostrar alerta de éxito y redirigir al login

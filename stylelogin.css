@@ -89,7 +89,7 @@ button:hover {
 
 .forgot-password {
     margin-top: 0.5rem;
-    color: white;
+    color: rgb(173, 198, 10);
     text-decoration: none;
 }
 
@@ -106,3 +106,6 @@ button:hover {
     text-decoration: underline;
 }
 
+.createAccount {
+    background-color: #00DEBB;
+}

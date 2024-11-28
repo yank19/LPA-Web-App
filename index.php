@@ -7,7 +7,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST["login"])) {
     $password = $_POST["password"];
 
     // Consultar el usuario en la base de datos
-    $sql = "SELECT lpa_user_ID,lpa_user_password FROM lpa_users WHERE lpa_user_username = ?";
+    $sql = "SELECT lpa_user_ID,lpa_user_password,lpa_user_role  FROM lpa_users WHERE lpa_user_username = ?";
     $stmt = $conn->prepare($sql);
     $stmt->bind_param("s", $username);
     $stmt->execute();
@@ -21,6 +21,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST["login"])) {
             // Guardar información en la sesión
             $_SESSION["user_id"] = $user["lpa_user_ID"];
             $_SESSION["username"] = $username;
+            $_SESSION["role"] = $user["lpa_user_role"]; // Guardar el rol del usuario
             echo "correct";
             // Redirigir al usuario a otra página
             header("Location: dashboard.php");
