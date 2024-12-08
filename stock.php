@@ -79,6 +79,7 @@ $result = $conn->query($sql);
                 $productID = $row['lpa_stock_ID'];
                 $productName = $row['lpa_stock_name'];
                 $productDesc = $row['lpa_stock_desc'];
+                $productDesc = $row['lpa_stock_desc'>1];
                 $productOnHand = $row['lpa_stock_onhand'];
                 $productPrice = $row['lpa_stock_price'];
                 $productImage = $row['lpa_stock_image'];
