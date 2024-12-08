@@ -66,8 +66,12 @@ $result = $conn->query($sql);
     <!-- Sección de Stock -->
     <section>
         <h3 class="titlepage">Stock</h3>
-        <div>
+        
+        <div class="searchbar">
+            <div class="intosearch">
             <input type="text" id="searchInput" placeholder="Search...">
+            <span class="fa fa-search"></span>
+            </div>
         </div>
     </section>
 
@@ -83,19 +87,21 @@ $result = $conn->query($sql);
                 $productPrice = $row['lpa_stock_price'];
                 $productImage = $row['lpa_stock_image'];
         ?>
-        <div class="product-container"> 
-            <img src="<?php echo htmlspecialchars($productImage); ?>" alt="<?php echo htmlspecialchars($productName); ?>" class="product-image"> 
-            <div class="product-details">
-                <div class="product-title"><?php echo htmlspecialchars($productName); ?></div> 
-                <div class="product-description"><?php echo htmlspecialchars($productDesc); ?></div> 
-                <div class="product-info"> 
-                    <span>$ <?php echo number_format($productPrice, 2); ?></span> 
-                    <span><?php echo htmlspecialchars($productOnHand); ?> Units</span> 
-                    <span>ID: <?php echo htmlspecialchars($productID); ?></span> 
-                    <span class="arrow-icon">&gt;</span>
-                </div>
-            </div> 
-        </div>
+    <div class="listproduts">
+            <div class="product-container"> 
+                <img src="<?php echo htmlspecialchars($productImage); ?>" alt="<?php echo htmlspecialchars($productName); ?>" class="product-image"> 
+                <div class="product-details">
+                    <div class="product-title"><?php echo htmlspecialchars($productName); ?></div> 
+                    <div class="product-description"><?php echo htmlspecialchars($productDesc); ?></div> 
+                    <div class="product-info"> 
+                        <span>$ <?php echo number_format($productPrice, 2); ?></span> 
+                        <span><?php echo htmlspecialchars($productOnHand); ?> Units</span> 
+                        <span>ID: <?php echo htmlspecialchars($productID); ?></span> 
+                        <span class="arrow-icon">&gt;</span>
+                    </div>
+                </div> 
+            </div>
+    </div>
         <?php
             }
         } else {

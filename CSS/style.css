@@ -176,7 +176,7 @@ h1 {
 section.whitepart{
     display: block;
     background: white;
-    height: 300px;
+    height: 450px;
     padding: 0px 15px 30px 15px;
 
 }
@@ -213,17 +213,58 @@ section.whitepart{
 }
 /* styles for stock */
 
+.titlepage{
+    text-align: center;
+    color: #00DEBB;
+    font-weight: 900;
+    font-size: 45pt;
+    margin-top: 40px;
+    margin-bottom: 50px;
+}
+
+.searchbar{
+    display: block;
+  text-align: center;
+}
+.intosearch{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 20px;
+}
+.searchbar input{
+
+width: 300px;
+padding: 10px;
+border: none;
+border-radius: 20px;
+box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+font-size: 16px;
+outline: none;
+}
+
+.searchbar .fa.fa-search{
+color: #00DEBB;
+font-size: 20pt;
+padding: auto;
+}
+.listproduts{
+    display: flex;
+   justify-content: center;
+}
+
 .product-container { 
     display: flex; 
     align-items: center; 
     background-color: #f5f5f5; 
     border-radius: 10px; 
-    padding: 20px; 
-    width: 600px; 
+    padding: 10px; 
+    margin-top: 20px;
+    width: 80%; 
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); 
 } 
 .product-image { 
-    width: 100px; 
+    width: 150px; 
     margin-right: 20px; 
 } 
 .product-details { 
@@ -243,6 +284,7 @@ section.whitepart{
     display: flex; 
     justify-content: space-between; 
     align-items: center; 
+    padding: 10px;
 } 
 .product-info span { 
     font-size: 16px; 
@@ -255,3 +297,44 @@ section.whitepart{
         padding: 0;
         flex-grow: 1;
 }
+
+/* style invoice*/ 
+.listinvoice{
+    display: block; 
+    margin-left: auto;
+    margin-right: auto;
+    margin: 25px 10px;
+}
+.itemslist{
+    margin-bottom: 20px;
+}
+.topside{
+    display: flex;
+    position: relative;
+    border-radius: 15px 15px 0px 0px;
+    width: 900px;
+    height: 15px;
+    padding: 15px;
+    margin: 0px;
+    background-color: #00bfa5;
+    color: #ffffff;
+}
+.buttonside{
+    display: flex;
+    position: relative;
+    width: 900px;
+    height: 35px;
+    padding: 15px;
+    margin: 0px;
+    background-color: #F5F5F5;
+    color: black;
+}
+.invoicedate {
+    position: absolute;
+    right: 20px;
+}
+.invoiceprice{
+    position: absolute;
+    right: 20px;
+}
+
