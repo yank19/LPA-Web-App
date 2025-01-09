@@ -19,14 +19,25 @@ body {
     position: fixed;
     height: 100%;
     overflow: auto;
+   
   }
-  
+  .menu ul li{
+    text-decoration: none;
+    list-style-type: none;
+  }
+ 
   .itens{
     display: block;
     color:  #ffff;
     padding: 8px 16px;
     text-decoration: none;
     
+  }
+  .itensseconlevel{
+    display: block;
+    color:  #ffff;
+    text-decoration: none;
+    list-style-type: none
   }
   .itensbutton{
 
@@ -58,6 +69,9 @@ body {
   }
   .itensbutton:hover:not(.active) {
     
+    color: #0082E3;
+  }
+  .itensseconlevel:hover{
     color: #0082E3;
   }
 
@@ -174,12 +188,14 @@ h1 {
 
 /* my style  */
 section.whitepart{
-    display: block;
-    background: white;
-    height: 450px;
-    padding: 0px 15px 30px 15px;
-
+    position: relative;
+    min-height: 480px; /* Ocupa al menos toda la altura de la pantalla */ 
+    box-sizing: border-box; /* Incluye padding y border en el cálculo de la altura */ 
+    padding: 20px; /* Espacio interno opcional */ 
+    overflow: auto; /* Evita el desbordamiento */ 
+    background-color: white; /* Color de fondo, opcional */ 
 }
+
 .buttonsHome{
     width: 100%;
     display: flex;
@@ -300,13 +316,28 @@ padding: auto;
 
 /* style invoice*/ 
 .listinvoice{
-    display: block; 
-    margin-left: auto;
-    margin-right: auto;
-    margin: 25px 10px;
+    display: flex; 
+    flex-direction: column; 
+    justify-content: center;
 }
 .itemslist{
-    margin-bottom: 20px;
+    margin: 10px auto; /* Para centrar horizontalmente también */ 
+    padding: 10px;
+}
+
+@media (max-width: 768px) {
+    .listinvoice { 
+        height: auto; /* Para que no ocupe toda la pantalla en dispositivos pequeños */ 
+        padding: 10px; /* Para añadir algo de espacio alrededor */ 
+    } 
+    .itemslist { 
+        width: 100%; /* Para que ocupen todo el ancho disponible en dispositivos pequeños */ 
+        margin: 10px 0; /* Ajuste del margen */ 
+    } 
+} 
+@media (max-width: 480px) { 
+    .itemslist { 
+        padding: 10px; /* Ajuste del padding en dispositivos muy pequeños */ }
 }
 .topside{
     display: flex;
@@ -331,10 +362,265 @@ padding: auto;
 }
 .invoicedate {
     position: absolute;
-    right: 20px;
+    right: 50px;
+}
+.itemslist .fa.fa-eye{
+    position: absolute;
+    right: 15px;
+    font-size: 14pt;
+    cursor: pointer;
+    font-weight: normal;
+    
+}
+
+#showmodal{ 
+    position: absolute;
+    right: 5px;
+    font-size: 14pt;
+    background-color: transparent; 
+    color: white; /* Color del icono */ 
+    border: none; /* Sin borde */ 
+    font-size: 20px; /* Tamaño del icono */ 
+    border-radius: 5px; /* Bordes redondeados */
+    cursor: pointer; /* Cambia el cursor al pasar sobre el botón */ 
+    transition: background-color 0.3s; /* Transición suave para el cambio de color de fondo */ 
+} 
+#showmodal:hover { 
+    color: black /* Fondo azul oscuro al pasar el cursor */
 }
 .invoiceprice{
     position: absolute;
     right: 20px;
 }
+.itemslist .fa.fa-eye:hover{
+    color: #000000;
+}
 
+/* Stayls for section two coumns*/ 
+
+.continvoice { 
+    position: relative;
+    display: grid; 
+    grid-template-columns: 1fr 1fr; /* Dos columnas de igual tamaño */ 
+    gap: 20px; /* space betwen colum */
+    height: 100%;
+    
+}
+.columnB {
+    position: relative;
+    background-color: #00DEBB; 
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 15px;
+    border-radius: 15px;
+}
+.columnA{
+    
+}
+.buttontotal{
+    position: absolute;
+    bottom: 20px;
+    color: #ffffff;
+    font-weight: 600;
+    font-size: 18pt;
+    text-align: center;
+}
+.titletotal{
+    position: absolute;
+    bottom: 45px;
+    color: #ffffff;
+    border: 22px;
+    border-color: #ffffff;
+}
+
+
+
+
+
+
+/* Stayls for Emergent windows*/ 
+.topsidenewin{
+    display: flex;
+    position: relative;
+    border-radius: 15px 15px 0px 0px;
+    width: 97%;
+    height: 15px;
+    padding: 15px;
+    margin: 0px;
+    background-color: #00bfa5;
+    color: #ffffff;
+}
+
+#modal {
+    border: none;
+    border-radius: 10px;
+    padding: 20px;
+    background-color: #ffffff;
+  
+}
+#modal::backdrop{
+    background-color: rgba(0, 0, 0, .55);
+}
+
+.popup-header {
+    display: flex;
+    justify-content: flex-end;
+}
+
+.close-btn {
+    cursor: pointer;
+    font-size: 35px;
+    color: red;
+    font-weight: bolder;
+}
+.save{
+    background-color: #00bfa5;
+    color: #ffffff;
+    margin: 5px 5px;
+    padding: 3px 8px;
+    cursor: pointer;
+    border-radius: 5px;
+}
+.edit{
+    background-color: #0082E3;
+    color: #ffffff;
+    margin: 5px 5px;
+    padding: 5px 8px;
+    cursor: pointer;
+    border-radius: 5px;
+}
+.edit:hover{
+    background-color: #043f6b;
+}
+.save:hover{
+    background-color: #007263;
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+    border: none;
+}
+
+table, th, td {
+    border: none;
+}
+.tableitens{
+   
+}
+.tableitens th, td {
+text-align: left;
+}
+
+.tableitens th {
+    background-color: transparent;
+    color: #00bfa5;
+
+}
+
+.CI { 
+    font-size: 1em; 
+    font-weight: bold; 
+    margin-top: 8px;
+    color: #00bfa5;
+}
+.tableCI { 
+    width: 100%; 
+    margin-top: 0px; 
+    border-collapse: collapse; 
+    border: none;
+}
+.tableCI td, th { 
+    padding-bottom: 2px; 
+} 
+.hedertableCI { 
+    font-weight: bold; 
+    color: #00bfa5;
+}
+.inftotal{
+    margin: 5px;
+    position: relative;
+    right: 5px;
+    text-align: right;
+}
+.inftotal p{
+    margin: 0;
+}
+
+.inftotal p .subtotal{
+    color: #00bfa5;
+    font-weight: bold;
+}
+#showmodalnewinvoice{
+   
+    position: absolute;
+    width: 100%;
+    background-color: transparent;
+    border: none;
+    color: #ffffff;
+    font-size: 14pt;
+    text-align: center;
+    top: 10px;
+    outline: none;
+    cursor: pointer;
+
+}
+#showmodalnewinvoice:hover{
+    color: #000000;
+    font-size: 16pt;
+}
+
+
+
+#modalnewinvoice {
+    border: none;
+    border-radius: 10px;
+    padding: 20px;
+    background-color: #ffffff;
+  
+}
+#modalnewinvoice::backdrop{
+    background-color: rgba(0, 0, 0, .55);
+}
+
+
+/* Stayls from new invoice*/ 
+
+#invoiceForm input{
+    outline: none;
+    background: #d7dee2;
+    border: none;
+    border-radius: 15px;
+    width: auto;
+    margin: 0px 10px 0px 0px;
+}
+input#orderNumber{
+    margin: 2px 15px;
+    width: 150px;
+    height: 15px;
+    padding: 3px;
+        
+}
+input#invoiceDate{
+    margin: 2px 15px;
+    width: 150px;
+    height: 15px;
+    padding: 3px;
+}
+#addItemButton{
+    outline: none;
+    border: none;
+    margin-top: 15px;
+}
+.deleteItemButton{
+    background-color: transparent;
+    border: none;
+    color: #e44343;
+    font-weight: 300;
+    font-size: 10pt;
+}
+.deleteItemButton:hover{
+    font-weight: bold;
+    cursor: pointer;
+}
