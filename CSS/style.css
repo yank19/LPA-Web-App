@@ -570,6 +570,24 @@ text-align: left;
     color: #000000;
     font-size: 16pt;
 }
+#showmodalclient{
+   
+    position: absolute;
+    width: 100%;
+    background-color: transparent;
+    border: none;
+    color: #ffffff;
+    font-size: 14pt;
+    text-align: center;
+    top: 10px;
+    outline: none;
+    cursor: pointer;
+
+}
+#showmodalclient:hover{
+    color: #000000;
+    font-size: 16pt;
+}
 
 
 
@@ -580,10 +598,19 @@ text-align: left;
     background-color: #ffffff;
   
 }
+#modalclient {
+    border: none;
+    border-radius: 10px;
+    padding: 20px;
+    background-color: #ffffff;
+  
+}
 #modalnewinvoice::backdrop{
     background-color: rgba(0, 0, 0, .55);
 }
-
+#modalclient::backdrop{
+    background-color: rgba(0, 0, 0, .55);
+}
 
 /* Stayls from new invoice*/ 
 

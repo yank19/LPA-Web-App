@@ -170,4 +170,31 @@ if (closemodalnewinvoice) {
                 console.error("Uno o más elementos no existen en el DOM");
             }
         });
+
+
+        // script for Dialog new client
+
+        document.addEventListener('DOMContentLoaded', function() {
+            
         
+            // Seleccionar elementos
+            const showmodal = document.getElementById("showmodalclient");
+            const closemodal = document.getElementById("closemodalclient");
+            const modal = document.getElementById("modalclient");
+        
+            // Abrir el diálogo al hacer clic en el botón con ID 'showmodal'
+            if (showmodal) {
+                showmodal.addEventListener("click", () => {
+                    modal.showModal(); // Usar showModal() para abrir el diálogo
+                });
+            }
+        
+            // Cerrar el diálogo al hacer clic en la "X"
+            if (closemodal) {
+                closemodal.addEventListener("click", () => {
+                    modal.close(); // Usar close() para cerrar el diálogo
+                });
+            }
+        
+        });
+          

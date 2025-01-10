@@ -171,13 +171,13 @@
 
             <div class="columnB"> 
 
-                <button id="showmodalnewinvoice">New Invoice <span class="fa fa-file"></span></button>
+                <button id="showmodalclient">New Client <span class="fa fa-user"></span></button>
              
 
-                <dialog id="modalnewinvoice">
+                <dialog id="modalclient">
                     <div class="popup-header">
                         <span class="save">Save</span>
-                        <span class="close-btn" id="closemodalnewinvoice">&times;</span>
+                        <span class="close-btn" id="closemodalclient">&times;</span>
                     </div>
 
                     <div class="popup-content">
@@ -216,37 +216,23 @@
                                 <p class="CI">Items</p>
                                 <div id="itemsContainer">
                                     <table class="tableitensnewinvoice">
-                                        <thead>
-                                            <tr>
-                                                <th><label for="itemId">ID</label></th>
-                                                <th><label for="itemName">Nombre</label></th>
-                                                <th><label for="units">Unidades</label></th>
-                                                <th><label for="unitPrice">V/U</label></th>
-                                                <th><label for="totalPrice">V/T</label></th>
-                                                <th></th>
-                                            </tr>
-                                        </thead>
-                                        <tbody>
-                                            <tr>
-                                                <td><input type="text" class="itemId" name="itemId[]" required></td>
-                                                <td><input type="text" class="itemName" name="itemName[]" required></td>
-                                                <td><input type="number" class="units" name="units[]" required></td>
-                                                <td><input type="number" class="unitPrice" name="unitPrice[]" required></td>
-                                                <td><input type="number" class="totalPrice" name="totalPrice[]" required readonly></td>
-                                                <td><button type="button" class="deleteItemButton">Delete</button></td>
-                                            </tr>
-                                        </tbody>
+                                        <table class="tableitens">
+                                            <thead>
+                                                <tr>
+                                                    <th>Invoice</th>
+                                                    <th>Date</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                <tr>
+                                                    <td>00011</td>
+                                                    <td>15/06/2021</td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
                                     </table>
-                                </div>
-                                <button type="button" id="addItemButton" class="save">Agregar Artículo</button>
-                            </div>
                             <hr>
-                            <div class="inftotal">
-                                <p><span class="subtotal">Sub total: </span>$<span id="subtotal">0</span></p>
-                                <p><span class="subtotal">TAX: </span>$<span id="tax">0</span></p>
-                                <p><span class="subtotal">Total: </span>$<span id="total">0</span></p>
-                            </div>
-                            <button type="submit" class="save">Save</button>
+                            
                         </form>
                     </div>
                 </dialog>
