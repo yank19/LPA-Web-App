@@ -1,0 +1,89 @@
+
+body {
+    margin: 0;
+    padding: 0 2em;
+    background-color: rgb(248, 248, 244);
+  }
+  
+  .item1 { 
+    grid-area: header;
+    color: rgb(247, 243, 243);
+    font-weight: bold;
+    font-size: 30px;
+    padding: 15px 0;
+    text-align: center;
+    background-color: #0b23bf ;
+  }
+  
+  .item2 { 
+    grid-area: mission;
+    color: white;
+    background-color: #dddddd;
+    color: black;
+  }
+  
+  .item2 > h1 {
+    margin-top: 2em;
+    text-align: center;
+  }
+  .item2 > p {
+    margin-top: 2em;
+    text-align: center;
+  }
+  .item3 { 
+    grid-area: maps;
+    background-color: #cfbffe;
+  }
+  
+  .item4 { 
+    grid-area: youtube;
+    background-color: #9ab4ff;
+    display: grid;
+    place-items:center;
+  }
+  
+  .item5 { 
+    grid-area: facebook;
+    background-color: #bfffff;
+    text-align: center;
+  }
+  
+  .item6 { 
+    
+    grid-area: footer;
+    color: rgb(247, 243, 243);
+    font-weight: bold;
+    font-size: 30px;
+    padding: 15px 0;
+    text-align: center;
+    background-color: #0b23bf ;
+    
+  }
+  
+  small {
+    text-align: center;
+    font: 15px Arial, Helvetica, sans-serif;
+    font-weight: bold;
+  }
+  
+  .grid-container {
+    display: grid;
+    grid-template-areas:
+    'header header header header header header'
+    'mission mission mission mission maps maps'
+    'youtube youtube youtube facebook facebook facebook'
+    'footer footer footer footer footer footer';
+    grid-gap: 1em;
+    background-color: #f8fbfb;
+    font-family: verdana;
+  }
+  
+  p {
+    font-size: 18px;
+  }
+  h1 {
+    font-weight: bold;
+    font-size: 30px;
+  }
+  
+  

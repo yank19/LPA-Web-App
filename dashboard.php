@@ -2,11 +2,6 @@
 session_start();
 require_once 'config.php'; // Conexión a la base de datos
 
-// // Verificar si el usuario está autenticado
-// if (!isset($_SESSION['user_id'])) {
-//     header("Location: index.php");
-//     exit();
-// }
 
 // Recuperar información del usuario desde la base de datos
 $user_id = $_SESSION['user_id'];
@@ -35,15 +30,12 @@ $stmt->close();
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    
     <title>Web APP</title>
     <link rel="stylesheet" href="CSS/style.css">
-
-    
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Krub:ital,wght@0,200;0,300;0,400;0,500;0,600;0,700;1,200;1,300;1,400;1,500;1,600;1,700&display=swap" rel="stylesheet">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Krub:ital,wght@0,200;0,300;0,400;0,500;0,600;0,700;1,200;1,300;1,400;1,500;1,600;1,700&display=swap" rel="stylesheet">
 
 
 </head>
@@ -61,23 +53,21 @@ $stmt->close();
             <br>
             <li><a class="itens" href="#"><span class="fa fa-home"></span> Home</a></li>
             <li><a class="itens" href="stock.php"><span class="fa fa-cube"></span> Stock</a></li>
-            <li><a class="itens" href="#"><span class="fa fa-line-chart"></span> Sales</a></li>
             <?php if ($_SESSION['role'] == 'admin') { ?>
-        <li><a class="itens" href="#"><span class="fa fa-book"></span> invoices</a></li>
-        <li><a class="itens" href="#"><span class="fa fa-users"></span> clients</a></li>
+            <li><a class="itens" href="#"><span class="fa fa-line-chart"></span> Sales</a></li>
+            <li><a class="itens" href="#"><span class="fa fa-book"></span> invoices</a></li>
+            <li><a class="itens" href="#"><span class="fa fa-users"></span> clients</a></li>
              <?php } ?>
             <br><br>
-            
+    
             <?php if ($_SESSION['role'] == 'admin') { ?>
-          <!-- <li><a href="system_admin.php"><span class="fa fa-cog"></span> System Admin.</a></li>  -->
         
-        <li><a class="itensbutton" href="#"><span class="fa fa-cog"></span> System Admin.</a></li>
-        <li><a class="itensbutton" href="user_management.php"><span class="fa fa-pencil"></span> User Management</a></li>
+            <li><a class="itensbutton" href="user_management.php"><span class="fa fa-pencil"></span> User Management</a></li>
              <?php } ?>
           
             <li><a class="itensbutton" href="#"><span class="fa fa-question-circle"></span> Help</a></li>
-            <li><a class="itensbutton" href="#"> <span class="fa fa-info-circle"></span> About</a></li>
-            <li><a class="itensbutton" href="#"><span class="fa fa-address-book"></span> User Guide</a></li>
+            <li><a class="itensbutton" href="mashup.php"> <span class="fa fa-info-circle"></span> About</a></li>
+            
             <li><a class="itensbutton" href="logout.php"><span class="fa fa-sign-out"></span> Log out</a></li>
         </ul>
     
