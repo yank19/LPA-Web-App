@@ -1,12 +1,12 @@
 <?php
 session_start();
-require_once 'config.php'; // Incluir la configuración de la base de datos
+require_once 'config.php'; // Include database configuration
 
 if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST["login"])) {
     $username = $_POST["username"];
     $password = $_POST["password"];
 
-    // Consultar el usuario en la base de datos
+    // Querying the user in the database
     $sql = "SELECT lpa_user_ID,lpa_user_password,lpa_user_role  FROM lpa_users WHERE lpa_user_username = ?";
     $stmt = $conn->prepare($sql);
     $stmt->bind_param("s", $username);
@@ -16,14 +16,14 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST["login"])) {
     if ($result->num_rows > 0) {
         $user = $result->fetch_assoc();
 
-        // Verificar la contraseña
+        // Verify your password
         if (password_verify($password, $user["lpa_user_password"])) {
             // Guardar información en la sesión
             $_SESSION["user_id"] = $user["lpa_user_ID"];
             $_SESSION["username"] = $username;
-            $_SESSION["role"] = $user["lpa_user_role"]; // Guardar el rol del usuario
+            $_SESSION["role"] = $user["lpa_user_role"]; // Save the user's role
             echo "correct";
-            // Redirigir al usuario a otra página
+            // Redirect the user to another page
             header("Location: dashboard.php");
             exit();
         } else {
@@ -33,10 +33,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST["login"])) {
         echo "<script>alert('User not found.');</script>";
     }
 
-    //$stmt->close();
 }
     
-
 ?>
 
 

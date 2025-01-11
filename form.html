@@ -1,0 +1,31 @@
+<!-- Add Product Form in your HTML -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Add Product</title>
+    <link rel="stylesheet" href="CSS/style.css">
+</head>
+<body>
+
+    <!-- Lateral menu -->
+    <!-- Add your lateral menu here -->
+
+    <!-- Form to Add a Product -->
+    <section class="whitepart">
+        <h3 class="titlepage">Add Product</h3>
+
+        <form action="add_product.php" method="post" enctype="multipart/form-data">
+            <input type="text" name="product_name" placeholder="Nombre del producto" required>
+            <textarea name="product_desc" placeholder="Descripción del producto" required></textarea>
+            <input type="text" name="product_onhand" placeholder="Cantidad en stock" required>
+            <input type="number" name="product_price" placeholder="Precio del producto" required>
+            <input type="file" name="product_image" accept="image/*" required> <!-- Acepta solo archivos de imagen -->
+            <button type="submit">Agregar Producto</button>
+        </form>
+    </section>
+
+</body>
+</html>
+

@@ -3,9 +3,12 @@ session_start();
 require_once 'config.php'; //
 
 $user_id = $_SESSION['user_id'];
-$sql = "SELECT lpa_user_firstname, lpa_user_lastname FROM lpa_users WHERE lpa_user_ID = ?";
+$sql = "SELECT lpa_stock_ID, lpa_stock_name, lpa_stock_desc, lpa_stock_onhand, lpa_stock_price, lpa_stock_image 
+        FROM lpa_stock 
+        WHERE lpa_stock_status = 'A' AND (lpa_stock_name LIKE ? OR lpa_stock_desc LIKE ?)";
 $stmt = $conn->prepare($sql);
-$stmt->bind_param("i", $user_id);
+$searchTerm = '%' . $_POST['search'] . '%'; 
+$stmt->bind_param("ss", $searchTerm, $searchTerm);
 $stmt->execute();
 $result = $stmt->get_result();
 
@@ -13,17 +16,13 @@ if ($result->num_rows > 0) {
     $user = $result->fetch_assoc();
     $firstname = $user['lpa_user_firstname'];
     $lastname = $user['lpa_user_lastname'];
+
 } 
-// else {
-//     // Si no se encuentra al usuario, cerrar sesión por seguridad
-//     session_destroy();
-//     header("Location: index.php");
-//     exit();
-// }
 
 
 
-// Consulta para obtener los productos
+
+//Inquiry for products
 $sql = "SELECT lpa_stock_ID, lpa_stock_name, lpa_stock_desc, lpa_stock_onhand, lpa_stock_price,  lpa_stock_image 
         FROM lpa_stock 
         WHERE lpa_stock_status = 'A'";
@@ -69,7 +68,7 @@ $result = $conn->query($sql);
         
         <div class="searchbar">
             <div class="intosearch">
-            <input type="text" id="searchInput" placeholder="Search...">
+            <input type="text" id="searchInput" placeholder="Search..." onkeyup="searchProducts()">
             <span class="fa fa-search"></span>
             </div>
         </div>
@@ -109,5 +108,38 @@ $result = $conn->query($sql);
         }
         ?>
     </section>
+
+
+
+    <script>
+    function searchProducts() {
+        const input = document.getElementById('searchInput');
+        const filter = input.value.toLowerCase();
+        const productList = document.querySelector('.whitepart'); //  the container where you're displaying the products
+
+        // Get all the products inside the container
+        const products = productList.getElementsByClassName('product-container');
+
+        //Go through all the products and hide the ones that don't match
+        for (let i = 0; i < products.length; i++) {
+            let productName = products[i].getElementsByClassName('product-title')[0]; //Changed to the correct class for the product title
+
+            if (productName) {
+                let textValue = productName.textContent || productName.innerText;
+                if (textValue.toLowerCase().indexOf(filter) > -1) {
+                    products[i].style.display = "";
+                } else {
+                    products[i].style.display = "none";
+                }
+            }
+        }
+    }
+    </script>
+
 </body>
+
+
+
 </html>
+
+
