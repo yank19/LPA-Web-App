@@ -1,3 +1,40 @@
+<?php
+session_start();
+require_once 'config.php'; // Conexión a la base de datos
+
+// // Verificar si el usuario está autenticado
+// if (!isset($_SESSION['user_id'])) {
+//     header("Location: index.php");
+//     exit();
+// }
+
+// Recuperar información del usuario desde la base de datos
+$user_id = $_SESSION['user_id'];
+$sql = "SELECT lpa_user_firstname, lpa_user_lastname FROM lpa_users WHERE lpa_user_ID = ?";
+$stmt = $conn->prepare($sql);
+$stmt->bind_param("i", $user_id);
+$stmt->execute();
+$result = $stmt->get_result();
+
+if ($result->num_rows > 0) {
+    $user = $result->fetch_assoc();
+    $firstname = $user['lpa_user_firstname'];
+    $lastname = $user['lpa_user_lastname'];
+} else {
+    // Si no se encuentra al usuario, cerrar sesión por seguridad
+    session_destroy();
+    header("Location: index.php");
+    exit();
+}
+$stmt->close();
+// Consulta para obtener las facturas
+$sql = "SELECT lpa_inv_no, lpa_inv_date, lpa_inv_client_ID, lpa_inv_client_name, lpa_inv_client_address, lpa_inv_amount, lpa_inv_status 
+        FROM lpa_invoices";
+$result = $conn->query($sql);
+?>
+?>
+
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -17,37 +54,11 @@
 <body>
 
     <!--lateral menu-->
-   
-        <ul class="menu">
-            <li><img src="" alt=""><a class="itens" id="nameUser"> <span class="fa fa-user-circle"></span> Yank Aldana</a></li>
-            <br>
-            <br>
-            <br>
-            <br><br>
-            <br>
-            <br>
-            <li><a class="itens" href="#"><span class="fa fa-home"></span> Home</a></li>
-            <li><a class="itens" href="#"><span class="fa fa-cube"></span> Stock</a></li>
-            <li><a class="itens" href="#"><span class="fa fa-line-chart"></span> Sales</a>,
-                <ul>
-                    <li><a class="itensseconlevel" href="#"><span class="fa fa-book"></span> invoices</a></li>
-                    <li><a class="itensseconlevel" href="#"><span class="fa fa-users"></span> clients</a></li>
-                </ul>
-            </li>
-            
-            <br>
-            <br>
-            <br>
-            <br>
-            <br><br>
-            <br>
-            <li><a class="itensbutton" href="#"><span class="fa fa-cog"></span> System Admin.</a></li>
-            <li><a class="itensbutton" href="#"><span class="fa fa-pencil"></span> User Management</a></li>
-            <li><a class="itensbutton" href="#"><span class="fa fa-question-circle"></span> Help</a></li>
-            <li><a class="itensbutton" href="#"> <span class="fa fa-info-circle"></span> About</a></li>
-            <li><a class="itensbutton" href="#"><span class="fa fa-address-book"></span> User Guide</a></li>
-            <li><a class="itensbutton" href="#"><span class="fa fa-sign-out"></span> Log out</a></li>
-        </ul>
+   <!---------------- Menu Estar --------------------------->
+
+   <?php include 'menu.php'; ?>
+
+<!---------------- Menu  END --------------------------->
     
         <section>
             <h3 class="titlepage">Invoice</h3>
@@ -64,19 +75,56 @@
 
         <div class="continvoice"> 
 
-            <div class="columnA"> 
-
+        <div class="columnA"> 
                 <div class="listinvoice">
+                    <?php
+                    if ($result->num_rows > 0) {
+                        while ($row = $result->fetch_assoc()) {
+                            $invNo = $row['lpa_inv_no'];
+                            $invDate = $row['lpa_inv_date'];
+                            $clientID = $row['lpa_inv_client_ID'];
+                            $clientName = $row['lpa_inv_client_name'];
+                            $clientAddress = $row['lpa_inv_client_address'];
+                            $amount = $row['lpa_inv_amount'];
+                            // Consulta para obtener los ítems de la factura actual
+                                $itemsSql = "SELECT lpa_invitem_no, lpa_invitem_stock_ID, lpa_invitem_stock_name, lpa_invitem_qty, lpa_invitem_stock_price, lpa_invitem_stock_amount 
+                                             FROM lpa_invoice_items 
+                                             WHERE lpa_invitem_inv_no = ?";
+                                $itemsStmt = $conn->prepare($itemsSql);
+                                $itemsStmt->bind_param("s", $invNo);
+                                $itemsStmt->execute();
+                                $itemsResult = $itemsStmt->get_result();
+                                $items = [];
+                                $subtotal = 0;
+                                while ($itemRow = $itemsResult->fetch_assoc()) {
+                                    $items[] = $itemRow;
+                                    // Calcula el subtotal sumando los valores totales de cada ítem
+                                    $subtotal += $itemRow['lpa_invitem_stock_amount'];
+                                }
+                                $itemsStmt->close();
 
+                                // Calcula el tax como el 10% del subtotal
+                                $tax = $subtotal * 0.10;
+                                // Calcula el total sumando el subtotal y el tax
+                                $total = $subtotal + $tax;
+                                // Actualiza los valores en la base de datos
+                                $updateSql = "UPDATE lpa_invoices 
+                                              SET lpa_inv_subtotal = ?, lpa_inv_tax = ?, lpa_inv_total = ? 
+                                              WHERE lpa_inv_no = ?";
+                                $updateStmt = $conn->prepare($updateSql);
+                                $updateStmt->bind_param("ddds", $subtotal, $tax, $total, $invNo);
+                                $updateStmt->execute();
+                                $updateStmt->close();
+   ?>
                     <div class="itemslist">
                         <div class="topside">
-                            <span>order #0125635</span>
-                            <span class="invoicedate">11/12/2024</span>
+                            <span>Order #<?php echo htmlspecialchars($invNo); ?></span>
+                            <span class="invoicedate"><?php echo htmlspecialchars($invDate); ?></span>
                             <button id="showmodal" class="fa fa-eye"></button>
                         </div>
                         <div class="buttonside">
-                            <span>Yank Aldana</span>
-                            <span class="invoiceprice">$4586</span>
+                            <span><?php echo htmlspecialchars($clientName); ?></span>
+                            <span class="invoiceprice">$<?php echo number_format($total, 2); ?></span> <!-- Mostrando el total -->
                         </div>
                     </div>
 
@@ -87,86 +135,76 @@
                             <span class="close-btn" id="closemodal">&times;</span>
                         </div>
                         <div class="popup-content">
-
                             <div class="topside">
-                                <span>Order #2359684</span>
-                                <span class="invoicedate">11/12/2024</span>
+                                <span>Order #<?php echo htmlspecialchars($invNo); ?></span>
+                                <span class="invoicedate"><?php echo htmlspecialchars($invDate); ?></span>
                             </div>
                             <div>
                                 <p class="CI">Customer Information</p>
-
                                 <table class="tableCI">
                                     <tr>
-                                      <td class="hedertableCI">Name:</td>
-                                      <td class="hedertableCI" >Address:</td>
-                                      <td class="hedertableCI" >Client ID:</td>
+                                        <td class="hedertableCI">Name:</td>
+                                        <td class="hedertableCI">Address:</td>
+                                        <td class="hedertableCI">Client ID:</td>
                                     </tr>
                                     <tr>
-                                      <td>Barto</td>
-                                      <td>333 Elizabeth St</td>
-                                      <td>1253</td>
+                                        <td><?php echo htmlspecialchars($clientName); ?></td>
+                                        <td><?php echo htmlspecialchars($clientAddress); ?></td>
+                                        <td><?php echo htmlspecialchars($clientID); ?></td>
                                     </tr>
                                     <tr>
-                                        <td class="hedertableCI" >Last Name:</td>
-                                        <td class="hedertableCI" >Phone:</td>
+                                        <td class="hedertableCI">Last Name:</td>
+                                        <td class="hedertableCI">Phone:</td>
                                     </tr>
-                                      <tr>
-                                        <td>smith</td>
+                                    <tr>
+                                        <td>Smith</td>
                                         <td>+61 458 256 257</td>
-                                      </tr>
-                                  </table>                                  
+                                    </tr>
+                                </table>
                             </div>
                             <hr>
                             <div>
-                               <p class="CI">Items</p>
-                            <table class="tableitens">
-                                <thead>
-                                    <tr>
-                                        <th>ID</th>
-                                        <th>Name</th>
-                                        <th>Units</th>
-                                        <th>V/U</th>
-                                        <th>V/T</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    <tr>
-                                        <td>2567</td>
-                                        <td>Asus VivoBook 15.6"</td>
-                                        <td>4</td>
-                                        <td>$256.04</td>
-                                        <td>$1119.52</td>
-                                    </tr>
-                                </tbody>
-                            </table>
-                            <br><br><br>
-                            <hr>
+                            <p class="CI">Items</p>
+                                <table class="tableitens">
+                                    <thead>
+                                        <tr>
+                                            <th>ID</th>
+                                            <th>Name</th>
+                                            <th>Units</th>
+                                            <th>V/U</th>
+                                            <th>V/T</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <?php foreach ($items as $item) { ?>
+                                        <tr>
+                                            <td><?php echo htmlspecialchars($item['lpa_invitem_stock_ID']); ?></td>
+                                            <td><?php echo htmlspecialchars($item['lpa_invitem_stock_name']); ?></td>
+                                            <td><?php echo htmlspecialchars($item['lpa_invitem_qty']); ?></td>
+                                            <td>$<?php echo htmlspecialchars($item['lpa_invitem_stock_price']); ?></td>
+                                            <td>$<?php echo htmlspecialchars($item['lpa_invitem_stock_amount']); ?></td>
+                                        </tr>
+                                        <?php } ?>
+                                    </tbody>
+                                </table>
                             </div>
+                            <hr>
                             <div class="inftotal">
-                                <p><span class="subtotal">Sub total: </span>$3258</p>
-                                <p><span class="subtotal">TAX: </span>$26.56</p>
-                                <p><span class="subtotal">Total: </span>$4326</p>
+                                <p><span class="subtotal">Sub total: </span>$<?php echo number_format($subtotal, 2); ?></p>
+                                <p><span class="subtotal">TAX: </span>$<?php echo number_format($tax, 2); ?></p>
+                                <p><span class="subtotal">Total: </span>$<?php echo number_format($total, 2); ?></p> <!-- Mostrando el total -->
                             </div>
                         </div>
                     </dialog>
 
-                    <div class="itemslist">
-                        <div class="topside">
-                            <span>order #0125635</span>
-                            <span class="invoicedate">11/12/2024</span>
-                            <span class="fa fa-eye"></span>
-                        </div>
-                        <div class="buttonside">
-                            <span>Yank Aldana</span>
-                            <span class="invoiceprice">$4586</span>
-                        </div>
-                    </div>
-
-                                                            
-
+                    <?php
+                        }
+                    } else {
+                        echo "<p>No invoices found.</p>";
+                    }
+                    ?>
                 </div>
-
-            </div> 
+            </div>
 
 
             <div class="columnB"> 

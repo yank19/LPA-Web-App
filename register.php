@@ -17,20 +17,20 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST["register"])) {
         // Encriptar la contraseña
         $hashed_password = password_hash($password, PASSWORD_BCRYPT);
 
-        // Insertar usuario en la base de datos
+        // Insert user in the database
         $sql = "INSERT INTO lpa_users (lpa_user_username, lpa_user_password, lpa_user_firstname, lpa_user_lastname, lpa_users_email, lpa_user_role) 
                 VALUES (?, ?, ?, ?, ?,?)";
         $stmt = $conn->prepare($sql);
-        $role = "user"; // Por defecto, rol de usuario normal
+        $role = "user"; // By default, normal user role
         $stmt->bind_param("sssss", $username, $hashed_password, $firstname, $lastname, $email,$role);
 
         if ($stmt->execute()) {
-            // Mostrar alerta de éxito y redirigir al login
+            // Show success alert and redirect to login
             echo "<script>
                     alert('User registered successfully.');
                     window.location.href = 'index.php';
                   </script>";
-            exit(); // Detener la ejecución del script después de redirigirß
+            exit(); // Stop script execution after redirecting
         } else {
             echo "Error al registrar el usuario: " . $conn->error;
         }

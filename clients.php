@@ -1,3 +1,36 @@
+
+<?php
+session_start();
+require_once 'config.php'; // Conexión a la base de datos
+
+// // Verificar si el usuario está autenticado
+// if (!isset($_SESSION['user_id'])) {
+//     header("Location: index.php");
+//     exit();
+// }
+
+// Recuperar información del usuario desde la base de datos
+$user_id = $_SESSION['user_id'];
+$sql = "SELECT lpa_user_firstname, lpa_user_lastname FROM lpa_users WHERE lpa_user_ID = ?";
+$stmt = $conn->prepare($sql);
+$stmt->bind_param("i", $user_id);
+$stmt->execute();
+$result = $stmt->get_result();
+
+if ($result->num_rows > 0) {
+    $user = $result->fetch_assoc();
+    $firstname = $user['lpa_user_firstname'];
+    $lastname = $user['lpa_user_lastname'];
+} else {
+    // Si no se encuentra al usuario, cerrar sesión por seguridad
+    session_destroy();
+    header("Location: index.php");
+    exit();
+}
+$stmt->close();
+?>
+
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -18,36 +51,11 @@
 
     <!--lateral menu-->
    
-        <ul class="menu">
-            <li><img src="" alt=""><a class="itens" id="nameUser"> <span class="fa fa-user-circle"></span> Yank Aldana</a></li>
-            <br>
-            <br>
-            <br>
-            <br><br>
-            <br>
-            <br>
-            <li><a class="itens" href="#"><span class="fa fa-home"></span> Home</a></li>
-            <li><a class="itens" href="#"><span class="fa fa-cube"></span> Stock</a></li>
-            <li><a class="itens" href="#"><span class="fa fa-line-chart"></span> Sales</a>,
-                <ul>
-                    <li><a class="itensseconlevel" href="#"><span class="fa fa-book"></span> invoices</a></li>
-                    <li><a class="itensseconlevel" href="#"><span class="fa fa-users"></span> clients</a></li>
-                </ul>
-            </li>
-            
-            <br>
-            <br>
-            <br>
-            <br>
-            <br><br>
-            <br>
-            <li><a class="itensbutton" href="#"><span class="fa fa-cog"></span> System Admin.</a></li>
-            <li><a class="itensbutton" href="#"><span class="fa fa-pencil"></span> User Management</a></li>
-            <li><a class="itensbutton" href="#"><span class="fa fa-question-circle"></span> Help</a></li>
-            <li><a class="itensbutton" href="#"> <span class="fa fa-info-circle"></span> About</a></li>
-            <li><a class="itensbutton" href="#"><span class="fa fa-address-book"></span> User Guide</a></li>
-            <li><a class="itensbutton" href="#"><span class="fa fa-sign-out"></span> Log out</a></li>
-        </ul>
+       <!---------------- Menu Estar --------------------------->
+
+   <?php include 'menu.php'; ?>
+
+<!---------------- Menu  END --------------------------->
     
         <section>
             <h3 class="titlepage">Clients</h3>
